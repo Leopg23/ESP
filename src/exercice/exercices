@@ -1,0 +1,64 @@
+public static void helloWorld() {
+        IO.println("hello world");
+    }
+
+    // la logique dun exposant est de se multiplier n1 par lui meme n2 fois
+    public static void exposant(int n1, int n2) {
+        int n3 = n1;
+        if(n2 == 1 ){
+            IO.println(n1);
+            return;
+        }
+        for (int i = 2; i <= n2; i++) {
+            n1 = n1 * n3;
+
+            if(i == n2){
+                IO.println(n1);
+            };
+        }
+        ;
+    }
+
+    public static void factoriel(int n1){
+            int n2 = n1;
+            for(int i=0; i < n1 && n2 != 0; i++){
+                n2 -= 1;
+                n1 = n1 * n2;
+                IO.println(n1 + "    " + n2);
+            }
+        }
+
+                Voiture voiture1 = new Voiture("toyota prius c", "grise", 2016);
+                IO.println(Voiture.getCompteur());
+                Voiture voiture2 = new Voiture("honda fit", "rouge", 2026);
+                IO.println(Voiture.getCompteur());
+                Voiture voiture3 = new Voiture("lamborgini", "bleue", 2006);
+                voiture3.description();
+                IO.println(Voiture.getCompteur());
+                Voiture voiture4 = new Voiture("kia rondo", "grise", 2015);
+                IO.println(Voiture.getCompteur());
+
+
+
+
+                 static void main() {
+                        Voiture lucy = new GolfCart("golf pro max", "rose",2027);
+                        Voiture tomas = new VUS("FORD", "ROUGE-NOIR", 1945);
+                //        Voiture lpg = new Voiture("Toyota Prius", "grise", 2016);
+                        onSenVaOu(lucy);
+                    }
+                    public static void onSenVaOu(Voiture voiture ){
+                        if( voiture instanceof VUS vus){
+                            VUS.allerEnMontagne();
+                            vus.description();
+                        } else if (voiture instanceof GolfCart golfCart) {
+                            GolfCart.allerAuGolf();
+                            golfCart.description();
+
+                            golfCart.description("Jaime le golf");
+                        }
+                        else
+                        {
+                            voiture.description();
+                        }
+                    }
