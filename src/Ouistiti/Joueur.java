@@ -45,6 +45,11 @@ public class Joueur {
         return sommeCalcule;
     }
 
+    @Override
+    public String toString(){
+        return "sNomJoueur[" + sNomJoueur + "] aMainJoueur"+"(" + aMainJoueur.size() + ")" +"[" + aMainJoueur + "], bPeutJeterCarte[" + bPeutJeterCarte + "], iScoreTotal[" + iScoreTotal + "]" ;
+
+    }
     //Getters/Setters
 
     public String getsNomJoueur() {

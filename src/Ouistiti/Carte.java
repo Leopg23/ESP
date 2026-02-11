@@ -26,4 +26,10 @@ public class Carte {
     public void setiValeur(int iValeur) {
         this.iValeur = iValeur;
     }
+
+
+    @Override
+    public String toString(){
+        return "Carte{" + getiValeur() + ", " + isbFaceVisible() + "}";
+    }
 }

@@ -28,4 +28,9 @@ public class Tas {
     public void setaCartes(List<Carte> aCartes) {
         this.aCartes = aCartes;
     }
+
+    @Override
+    public String toString(){
+        return "aCartes"+"(" + aCartes.size() + ")" + aCartes;
+    }
 }

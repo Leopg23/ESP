@@ -18,4 +18,6 @@ public class Paquet extends Tas{
         cartePige = new Carte(cartePige.getiValeur(), cartePige.isbFaceVisible());
         return cartePige;
     }
+
+
 }
