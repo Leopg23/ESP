@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Partie {
-    private List<Joueur> aJoueurs = new ArrayList<>();
+    private List<Joueur> aJoueurs;
     private Paquet oPaquet;
     private Defausse oDefausse;
     private int iTourActuel;
@@ -35,6 +35,7 @@ public class Partie {
                 "oDefausse{" + oDefausse + "}\n" +
                 "iTourActuel = " + iTourActuel + ";" ;
     }
+
 
 
     //Getters/Setters

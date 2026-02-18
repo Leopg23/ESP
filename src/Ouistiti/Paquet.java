@@ -15,7 +15,7 @@ public class Paquet extends Tas{
 
     public Carte piger(){
         Carte cartePige = null;
-        cartePige = new Carte(cartePige.getiValeur(), cartePige.isbFaceVisible());
+        cartePige = new Carte(cartePige.getiValeur(), cartePige.isbFaceVisible(),false);
         return cartePige;
     }
 

@@ -1,36 +1,35 @@
 package Ouistiti;
+
 import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
-    static void main(){
-        // 1. Create the window (The Frame)
-        JFrame frame = new JFrame("Ma Partie de Cartes");
-        frame.setSize(500, 400);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    // Variables qui ne changerons pas seront stocker dans main et en maj
+    public static final int ISCREEN_WIDTH = 1920;
+    public static final int ISCREEN_HEIGHT = 1080;
+    public static final int ICARTE_WIDTH = 75;
+    public static final int ICARTE_HEIGHT = 100;
 
-        // 2. Create a component to show your text
-        JTextArea textArea = new JTextArea();
-        textArea.setEditable(false);
+    static void main() {
 
-        // Use your existing toString() here!
-        // MaPartie partie = new MaPartie();
-        // textArea.setText(partie.toString());
+        // Il est preferable de call la fonction ainsi pour eviter de creer des bugs de syncronisation
 
-        textArea.setText("Bienvenue Léo!\nVotre partie s'affichera ici.");
-
-        // 3. Add to frame and show
-        frame.add(new JScrollPane(textArea)); // Adds a scrollbar if text is long
-        frame.setVisible(true);
 
 
         List<Carte> aCartePaquet = new ArrayList<>();
         List<Carte> aCarteDefausse = new ArrayList<>();
         List<Carte> aMainJoueur = new ArrayList<>();
         boolean bFaceVisible = true;
-        for(int i=1; i<2; i++){
-            aMainJoueur.add(new Carte(i, bFaceVisible));
+        for (int i = 0; i < 4; i++) {
+            if(Math.random() < 0.5){
+                aMainJoueur.add(new Carte(i, bFaceVisible, false));
+            }
+            else {
+                aMainJoueur.add(new Carte(i, bFaceVisible, true));
+            }
+
+
         }
 
         List<Joueur> aJoueurs = new ArrayList<>();
@@ -38,21 +37,39 @@ public class Main {
         boolean bPeutJeterCarte = false;
         int iScoreTotal = 0;
 
-        for(int i=1; i<=2; i++){
-            aJoueurs.add(new Joueur(sNomJoueur,aMainJoueur,bPeutJeterCarte,iScoreTotal));
+        for (int i = 1; i <= 2; i++) {
+            aJoueurs.add(new Joueur(sNomJoueur, aMainJoueur, bPeutJeterCarte, iScoreTotal));
             sNomJoueur = "pierre";
         }
 
         Paquet oPaquet = new Paquet(aCartePaquet);
 
-        for(int i=1; i<=52; i++){
-            oPaquet.aCartes.add(new Carte(i,false));
+        for (int i = 1; i <= 52; i++) {
+            oPaquet.aCartes.add(new Carte(i,false , false));
         }
 
         Defausse oDefausse = new Defausse(aCarteDefausse);
-        int iTourActuel = 1;
-        Partie oPartie = new Partie(aJoueurs,oPaquet,oDefausse,iTourActuel);
+
+        Partie oPartie = new Partie(aJoueurs, oPaquet, oDefausse, 1);
         oPartie.initialierPartie();
         IO.println(oPartie);
+
+        SwingUtilities.invokeLater(() -> OuvrirFenetre(oPartie));
     }
+
+    public static void OuvrirFenetre(Partie oPartie) {
+
+        DisplayJeu jeu = new DisplayJeu(oPartie);
+        ImageIcon imageIcon = new ImageIcon("res/icon.png");
+
+        JFrame frame = new JFrame("Ouistiti");
+        frame.add(jeu);
+        frame.pack();
+        frame.setIconImage(imageIcon.getImage());
+        frame.setLocationRelativeTo(null);
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+
 }

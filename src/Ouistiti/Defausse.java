@@ -11,7 +11,7 @@ public class Defausse extends Tas{
 
     public Carte regarderTop(){
         Carte cartePige = null;
-        cartePige = new Carte(cartePige.getiValeur(), cartePige.isbFaceVisible());
+        cartePige = new Carte(cartePige.getiValeur(), cartePige.isbFaceVisible(),false);
         return cartePige;
     }
 }

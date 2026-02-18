@@ -3,12 +3,19 @@ package Ouistiti;
 public class Carte {
     int iValeur;
     boolean bFaceVisible;
-
-    public Carte (int iValeur, boolean bFaceVisible){
+    boolean bEstNull;
+    public Carte(int iValeur, boolean bFaceVisible, boolean bEstNull) {
         this.iValeur = iValeur;
         this.bFaceVisible = bFaceVisible;
+        this.bEstNull = bEstNull;
     }
 
+    public record Zone(int posx, int posy, int width, int height) {
+        public Zone {
+            posx = posx - (width / 2);
+            posy = posy - (height / 2);
+        }
+    }
     // Getters / Setters
 
     public boolean isbFaceVisible() {
@@ -27,9 +34,16 @@ public class Carte {
         this.iValeur = iValeur;
     }
 
+    public boolean isbEstNull() {
+        return bEstNull;
+    }
+
+    public void setbEstNull(boolean bEstNull) {
+        this.bEstNull = bEstNull;
+    }
 
     @Override
-    public String toString(){
-        return "Carte{" + getiValeur() + ", " + isbFaceVisible() + "}";
+    public String toString() {
+        return "Carte{" + getiValeur() + ", " + isbFaceVisible() + ", " + isbEstNull() + "}";
     }
 }
