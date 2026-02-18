@@ -1,22 +1,31 @@
 package Ouistiti;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class Paquet extends Tas{
 
     public Paquet(List<Carte> aCartes){
         super(aCartes);
         this.aCartes = aCartes;
+
     }
 
-    public void melanger(){
-
+    public List<Carte> melanger(){
+        Collections.shuffle(aCartes);
+        return aCartes;
     }
 
     public Carte piger(){
-        Carte cartePige = null;
-        cartePige = new Carte(cartePige.getiValeur(), cartePige.isbFaceVisible(),false);
-        return cartePige;
+            if(aCartes.isEmpty()){
+                IO.println("il ne reste plus de carte");
+                return null;
+            }
+
+            Carte cartePige = aCartes.getFirst();
+            aCartes.remove(cartePige);
+            return cartePige;
     }
 
 

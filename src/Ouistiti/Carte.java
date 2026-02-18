@@ -29,6 +29,9 @@ public class Carte {
     public int getiValeur() {
         return iValeur;
     }
+    public String getiValeurString() {
+        return String.valueOf(iValeur);
+    }
 
     public void setiValeur(int iValeur) {
         this.iValeur = iValeur;

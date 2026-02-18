@@ -17,7 +17,17 @@ public class Partie {
     }
     public void initialierPartie() {
         IO.println("Partie Commencée");
+        oPaquet.melanger();
 
+        for(int i = 0; i < aJoueurs.size();i++){
+            Joueur oJoueurActuel = aJoueurs.get(i);
+            List<Carte> aMainDepart = new ArrayList<>();
+
+            for(int j = 0; j < aJoueurs.size();j++){
+                aMainDepart.add(oPaquet.piger());
+                oJoueurActuel.setaMainJoueur(aMainDepart);
+            }
+        }
     }
 
     private void passerTour() {

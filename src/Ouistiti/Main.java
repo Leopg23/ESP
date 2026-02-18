@@ -6,8 +6,8 @@ import java.util.List;
 
 public class Main {
     // Variables qui ne changerons pas seront stocker dans main et en maj
-    public static final int ISCREEN_WIDTH = 1920;
-    public static final int ISCREEN_HEIGHT = 1080;
+    public static final int ISCREEN_WIDTH = 1300;
+    public static final int ISCREEN_HEIGHT = 760;
     public static final int ICARTE_WIDTH = 75;
     public static final int ICARTE_HEIGHT = 100;
 
@@ -54,6 +54,7 @@ public class Main {
         oPartie.initialierPartie();
         IO.println(oPartie);
 
+        oPartie.initialierPartie();
         SwingUtilities.invokeLater(() -> OuvrirFenetre(oPartie));
     }
 

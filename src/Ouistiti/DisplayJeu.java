@@ -17,6 +17,7 @@ public class DisplayJeu extends JPanel {
     private Image imgCarte;
     private Image imgCarteFaceDown;
     private Image imgCarteNull;
+    private String imgCarteActive = "pigez une carte";
     boolean test = false;
 
     int centerX = Main.ISCREEN_WIDTH / 2;
@@ -49,22 +50,27 @@ public class DisplayJeu extends JPanel {
 
         try {
             imgCarte = ImageIO.read(new File("res/carte.png"));
-        } catch (IOException e) {
-            IO.println(e.getMessage());
-        }
-
-        try {
             imgCarteFaceDown = ImageIO.read(new File("res/icon.png"));
+            imgCarteNull = ImageIO.read(new File("res/null.png"));
         } catch (IOException e) {
             IO.println(e.getMessage());
         }
 
-        try {
-            imgCarteFaceDown = ImageIO.read(new File("res/null.png"));
-        } catch (IOException e) {
-            IO.println(e.getMessage());
-        }
 
+        this.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    if (rZonePaquet.contient(e.getPoint())) {
+
+                        Carte carteActive = oPartie.getoPaquet().piger();
+
+                        imgCarteActive =    (carteActive != null)
+                                            ? carteActive.getiValeurString()
+                                            : "paquet vide";
+                        repaint();
+                    }
+                }
+            });
 
 //        for (Joueur.Zone z : aZonesJoueurs){
 //            this.addMouseListener(new MouseAdapter() {
@@ -88,6 +94,7 @@ public class DisplayJeu extends JPanel {
 
         List<Joueur> listeJoueurs = oPartie.getaJoueurs();
 
+        g.drawString(imgCarteActive, rZonePaquet.posx(), rZonePaquet.posy());
         g.drawImage(imgCarteFaceDown, rZonePaquet.posx(), rZonePaquet.posy(), rZonePaquet.width(), rZonePaquet.height(), null);
         g.drawImage(imgCarte, rZoneDefausse.posx(), rZoneDefausse.posy(), rZoneDefausse.width(), rZoneDefausse.height(), null);
 
@@ -95,16 +102,17 @@ public class DisplayJeu extends JPanel {
             Joueur.Zone rZoneJoueur = aZonesJoueurs.get(i);
             Joueur oJoueurActuel = listeJoueurs.get(i);
 
-
+            g.setColor(Color.RED);
             g.fillRect(rZoneJoueur.posx(), rZoneJoueur.posy(), rZoneJoueur.width(), rZoneJoueur.height());
-
+            g.setColor(Color.black);
             Point[] points = rZoneJoueur.getPointsCartes();
             List<Carte> oMainJoueurActuel = oJoueurActuel.getaMainJoueur();
 
-            for (int i2 = 0; i2 < oMainJoueurActuel.size(); i2++) {
-                Point p = points[i2];
-
-                if (!oMainJoueurActuel.get(i2).bEstNull) {
+            for (int j = 0; j < oMainJoueurActuel.size(); j++) {
+                Point p = points[j];
+                Carte carteActuelle = oMainJoueurActuel.get(j);
+                if (!carteActuelle.bEstNull) {
+                    g.drawString(carteActuelle.getiValeurString(), p.x + 66, p.y + 25);
                     g.drawImage(imgCarte, p.x + 66, p.y + 25, 75, 100, null);
                 }
                 else{
