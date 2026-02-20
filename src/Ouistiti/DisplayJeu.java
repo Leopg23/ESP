@@ -40,7 +40,7 @@ public class DisplayJeu extends JPanel {
         this.setBackground(Color.BLACK);
 
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < Main.INOMBRE_JOUEURS; i++) {
             int px = centerX + dx[i];
             int py = centerY + dy[i];
 
@@ -129,7 +129,6 @@ public class DisplayJeu extends JPanel {
 
 
     //Getters/Setters
-
 
     public Partie getoPartie() {
         return oPartie;

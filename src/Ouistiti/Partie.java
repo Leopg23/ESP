@@ -23,7 +23,7 @@ public class Partie {
             Joueur oJoueurActuel = aJoueurs.get(i);
             List<Carte> aMainDepart = new ArrayList<>();
 
-            for(int j = 0; j < aJoueurs.size();j++){
+            for(int j = 0; j < Main.ITAILLE_MAIN;j++){
                 aMainDepart.add(oPaquet.piger());
                 oJoueurActuel.setaMainJoueur(aMainDepart);
             }

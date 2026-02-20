@@ -6,30 +6,23 @@ import java.util.List;
 
 public class Main {
     // Variables qui ne changerons pas seront stocker dans main et en maj
-    public static final int ISCREEN_WIDTH = 1300;
-    public static final int ISCREEN_HEIGHT = 760;
+    public static final int ISCREEN_WIDTH = 1920;
+    public static final int ISCREEN_HEIGHT = 1080;
     public static final int ICARTE_WIDTH = 75;
     public static final int ICARTE_HEIGHT = 100;
-
+    public static final int ITAILLE_MAIN = 4;
+    public static final int INOMBRE_JOUEURS = 2;
+    public static final int INOMBRE_CARTES_TOTAL = 52;
     static void main() {
 
         // Il est preferable de call la fonction ainsi pour eviter de creer des bugs de syncronisation
-
-
 
         List<Carte> aCartePaquet = new ArrayList<>();
         List<Carte> aCarteDefausse = new ArrayList<>();
         List<Carte> aMainJoueur = new ArrayList<>();
         boolean bFaceVisible = true;
-        for (int i = 0; i < 4; i++) {
-            if(Math.random() < 0.5){
+        for (int i = 0; i < ITAILLE_MAIN; i++) {
                 aMainJoueur.add(new Carte(i, bFaceVisible, false));
-            }
-            else {
-                aMainJoueur.add(new Carte(i, bFaceVisible, true));
-            }
-
-
         }
 
         List<Joueur> aJoueurs = new ArrayList<>();
@@ -37,14 +30,14 @@ public class Main {
         boolean bPeutJeterCarte = false;
         int iScoreTotal = 0;
 
-        for (int i = 1; i <= 2; i++) {
+        for (int i = 1; i <= INOMBRE_JOUEURS; i++) {
             aJoueurs.add(new Joueur(sNomJoueur, aMainJoueur, bPeutJeterCarte, iScoreTotal));
             sNomJoueur = "pierre";
         }
 
         Paquet oPaquet = new Paquet(aCartePaquet);
 
-        for (int i = 1; i <= 52; i++) {
+        for (int i = 1; i <= INOMBRE_CARTES_TOTAL; i++) {
             oPaquet.aCartes.add(new Carte(i,false , false));
         }
 
