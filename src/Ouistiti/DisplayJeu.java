@@ -18,7 +18,7 @@ public class DisplayJeu extends JPanel {
     private Image imgCarteFaceDown;
     private Image imgCarteNull;
     private String imgCarteActive = "pigez une carte";
-    boolean test = false;
+    boolean bPigerEnCours = false;
 
     int centerX = Main.ISCREEN_WIDTH / 2;
     int centerY = Main.ISCREEN_HEIGHT / 2;
@@ -46,6 +46,16 @@ public class DisplayJeu extends JPanel {
 
             aZonesJoueurs.add(new Joueur.Zone(px, py, 400, 300));
 
+            Joueur oJoueurActuel = oPartie.getaJoueurs().get(i);
+            Joueur.Zone rZoneJoueur = aZonesJoueurs.get(i);
+            Point[] points = rZoneJoueur.getPointsCartes();
+            List<Joueur.Zone> aPositionCartesJoueurActuel = new ArrayList<>();
+            for (int j = 0; j < Main.ITAILLE_MAIN; j++) {
+                Point p = points[j];
+                aPositionCartesJoueurActuel.add(new Joueur.Zone( p.x , p.y , 75, 100));
+            }
+            oJoueurActuel.setaPositionCartes(aPositionCartesJoueurActuel);
+            IO.println( "test1-------"+oJoueurActuel.getaPositionCartes());
         }
 
         try {
@@ -60,14 +70,18 @@ public class DisplayJeu extends JPanel {
         this.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mousePressed(MouseEvent e) {
-                    if (rZonePaquet.contient(e.getPoint())) {
-
+                    if (rZonePaquet.contient(e.getPoint()) && bPigerEnCours) {
+                        bPigerEnCours = !bPigerEnCours;
                         Carte carteActive = oPartie.getoPaquet().piger();
 
                         imgCarteActive =    (carteActive != null)
                                             ? carteActive.getiValeurString()
                                             : "paquet vide";
                         repaint();
+                    }
+                    for(int i = 0; i < Main.INOMBRE_JOUEURS; i++){
+                        Joueur oJoueurActuel = oPartie.getaJoueurs().get(i);
+
                     }
                 }
             });
@@ -92,7 +106,7 @@ public class DisplayJeu extends JPanel {
         super.paintComponent(g);
         g.setColor(Color.RED);
 
-        List<Joueur> listeJoueurs = oPartie.getaJoueurs();
+
 
         g.drawString(imgCarteActive, rZonePaquet.posx(), rZonePaquet.posy());
         g.drawImage(imgCarteFaceDown, rZonePaquet.posx(), rZonePaquet.posy(), rZonePaquet.width(), rZonePaquet.height(), null);
@@ -100,23 +114,24 @@ public class DisplayJeu extends JPanel {
 
         for (int i = 0; i < aZonesJoueurs.size(); i++) {
             Joueur.Zone rZoneJoueur = aZonesJoueurs.get(i);
-            Joueur oJoueurActuel = listeJoueurs.get(i);
-
+            Joueur oJoueurActuel = oPartie.getaJoueurs().get(i);
+            List<Joueur.Zone> aPositionCartesJoueurActuel = oJoueurActuel.getaPositionCartes();
             g.setColor(Color.RED);
             g.fillRect(rZoneJoueur.posx(), rZoneJoueur.posy(), rZoneJoueur.width(), rZoneJoueur.height());
             g.setColor(Color.black);
-            Point[] points = rZoneJoueur.getPointsCartes();
+//            Point[] points = rZoneJoueur.getPointsCartes();
             List<Carte> oMainJoueurActuel = oJoueurActuel.getaMainJoueur();
 
             for (int j = 0; j < oMainJoueurActuel.size(); j++) {
-                Point p = points[j];
+                Joueur.Zone p = aPositionCartesJoueurActuel.get(j);
+
                 Carte carteActuelle = oMainJoueurActuel.get(j);
                 if (!carteActuelle.bEstNull) {
-                    g.drawString(carteActuelle.getiValeurString(), p.x + 66, p.y + 25);
-                    g.drawImage(imgCarte, p.x + 66, p.y + 25, 75, 100, null);
+                    g.drawString(carteActuelle.getiValeurString(), p.posx(), p.posy() );
+                    g.drawImage(imgCarte, p.posx(), p.posy(), 75, 100, null);
                 }
                 else{
-                    g.drawImage(imgCarteNull, p.x + 66, p.y + 25, 75, 100, null);
+                    g.drawImage(imgCarteNull, p.posx(), p.posy(), 75, 100, null);
                 }
 
             }

@@ -9,14 +9,15 @@ public class Joueur {
     private List<Carte> aMainJoueur = new ArrayList<>();
     private boolean bPeutJeterCarte;
     private int iScoreTotal;
-
+    private List<Zone> aPositionCartes = new ArrayList<>();
     public Joueur(String sNomJoueur, List<Carte> aMainJoueur, boolean bPeutJeterCarte, int iScoreTotal) {
         this.sNomJoueur = sNomJoueur;
         this.aMainJoueur = aMainJoueur;
         this.bPeutJeterCarte = bPeutJeterCarte;
         this.iScoreTotal = iScoreTotal;
+        this.aPositionCartes = aPositionCartes;
+        aPositionCartes = List.of(new Zone[]{new Zone(1, 1, 1, 1), new Zone(1, 1, 1, 1), new Zone(1,1,1,1), new Zone(1,1,1,1)});
     }
-
     public record Zone(int posx, int posy, int width, int height) {
         public Zone {
             posx = posx - (width / 2);
@@ -26,10 +27,10 @@ public class Joueur {
 
         public Point[] getPointsCartes() {
             return new Point[] {
-                    new Point(posx, posy),                         // Haut Gauche
-                    new Point(posx + width/2, posy),              // Haut Droite
-                    new Point(posx, posy + height/2),             // Bas Gauche
-                    new Point(posx + width/2, posy + height/2)    // Bas Droite
+                    new Point(posx + width/4, posy +height/4),                         // Haut Gauche
+                    new Point(posx + ((width/4) *3), posy + height/4),              // Haut Droite
+                    new Point(posx + width/4, posy + ((height/4) *3)),             // Bas Gauche
+                    new Point(posx + ((width/4) *3), posy + ((height/4) *3))    // Bas Droite
             };
         }
     }
@@ -97,4 +98,11 @@ public class Joueur {
         this.iScoreTotal = iScoreTotal;
     }
 
+    public List<Zone> getaPositionCartes() {
+        return aPositionCartes;
+    }
+
+    public void setaPositionCartes(List<Zone> aPositionCartes) {
+        this.aPositionCartes = aPositionCartes;
+    }
 }
