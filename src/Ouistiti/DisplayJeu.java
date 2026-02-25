@@ -17,6 +17,7 @@ public class DisplayJeu extends JPanel {
     private Image imgCarte;
     private Image imgCarteFaceDown;
     private Image imgCarteNull;
+    private Image imgZoneJoueur;
     private String imgCarteActive = "pigez une carte";
     boolean bPigerEnCours = false;
 
@@ -44,7 +45,7 @@ public class DisplayJeu extends JPanel {
             int px = centerX + dx[i];
             int py = centerY + dy[i];
 
-            aZonesJoueurs.add(new Joueur.Zone(px, py, 400, 300));
+            aZonesJoueurs.add(new Joueur.Zone(px, py, Main.IZONEJOUEUR[0], Main.IZONEJOUEUR[1]));
 
             Joueur oJoueurActuel = oPartie.getaJoueurs().get(i);
             Joueur.Zone rZoneJoueur = aZonesJoueurs.get(i);
@@ -62,6 +63,7 @@ public class DisplayJeu extends JPanel {
             imgCarte = ImageIO.read(new File("res/carte.png"));
             imgCarteFaceDown = ImageIO.read(new File("res/icon.png"));
             imgCarteNull = ImageIO.read(new File("res/null.png"));
+            imgZoneJoueur = ImageIO.read(new File("res/zoneJoueur.png"));
         } catch (IOException e) {
             IO.println(e.getMessage());
         }
@@ -117,7 +119,7 @@ public class DisplayJeu extends JPanel {
             Joueur oJoueurActuel = oPartie.getaJoueurs().get(i);
             List<Joueur.Zone> aPositionCartesJoueurActuel = oJoueurActuel.getaPositionCartes();
             g.setColor(Color.RED);
-            g.fillRect(rZoneJoueur.posx(), rZoneJoueur.posy(), rZoneJoueur.width(), rZoneJoueur.height());
+            g.drawImage(imgZoneJoueur,rZoneJoueur.posx(), rZoneJoueur.posy(), rZoneJoueur.width(), rZoneJoueur.height(),null);
             g.setColor(Color.black);
 //            Point[] points = rZoneJoueur.getPointsCartes();
             List<Carte> oMainJoueurActuel = oJoueurActuel.getaMainJoueur();

@@ -13,6 +13,7 @@ public class Main {
     public static final int ITAILLE_MAIN = 4;
     public static final int INOMBRE_JOUEURS = 2;
     public static final int INOMBRE_CARTES_TOTAL = 52;
+    public static final int[] IZONEJOUEUR = {400, 300}; // [0] = x, [1] = y
     static void main() {
 
         // Il est preferable de call la fonction ainsi pour eviter de creer des bugs de syncronisation
