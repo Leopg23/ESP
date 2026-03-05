@@ -112,7 +112,7 @@ public class DisplayJeu extends JPanel {
         g.drawImage(imgBackground, 0,0,Main.ISCREEN_WIDTH,Main.ISCREEN_HEIGHT,null);
 
 
-        g.drawString(imgCarteActive, rZonePaquet.posx(), rZonePaquet.posy());
+//        g.drawString(imgCarteActive, rZonePaquet.posx(), rZonePaquet.posy());
         g.drawImage(imgCarteFaceDown, rZonePaquet.posx(), rZonePaquet.posy(), rZonePaquet.width(), rZonePaquet.height(), null);
         g.drawImage(imgCarte, rZoneDefausse.posx(), rZoneDefausse.posy(), rZoneDefausse.width(), rZoneDefausse.height(), null);
 

@@ -49,22 +49,36 @@ public class Main {
         IO.println(oPartie);
 
         oPartie.initialierPartie();
-        SwingUtilities.invokeLater(() -> OuvrirFenetre(oPartie));
+        SwingUtilities.invokeLater(() -> GererFenetre(oPartie));
     }
 
-    public static void OuvrirFenetre(Partie oPartie) {
+    public static void GererFenetre(Partie oPartie) {
 
         DisplayJeu jeu = new DisplayJeu(oPartie);
         ImageIcon imageIcon = new ImageIcon("res/icon.png");
 
         JFrame frame = new JFrame("Ouistiti");
+        frame.setUndecorated(true);
         frame.add(jeu);
         frame.pack();
+        frame.setFocusable(true);
         frame.setIconImage(imageIcon.getImage());
         frame.setLocationRelativeTo(null);
         frame.setResizable(false);
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
+
+        frame.addKeyListener(new java.awt.event.KeyAdapter() {
+            @Override
+            public void keyPressed(java.awt.event.KeyEvent e) {
+                if (e.getKeyCode() == java.awt.event.KeyEvent.VK_ESCAPE) {
+                    System.exit(0);
+                }
+            }
+        });
+
+
     }
 
 }
