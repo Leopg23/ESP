@@ -18,6 +18,7 @@ public class DisplayJeu extends JPanel {
     private Image imgCarteFaceDown;
     private Image imgCarteNull;
     private Image imgZoneJoueur;
+    private Image imgBackground;
     private String imgCarteActive = "pigez une carte";
     boolean bPigerEnCours = false;
 
@@ -60,8 +61,9 @@ public class DisplayJeu extends JPanel {
         }
 
         try {
+            imgBackground = ImageIO.read(new File("res/fond_du_jeu.png"));
             imgCarte = ImageIO.read(new File("res/carte.png"));
-            imgCarteFaceDown = ImageIO.read(new File("res/icon.png"));
+            imgCarteFaceDown = ImageIO.read(new File("res/carte_verso.png"));
             imgCarteNull = ImageIO.read(new File("res/null.png"));
             imgZoneJoueur = ImageIO.read(new File("res/zoneJoueur.png"));
         } catch (IOException e) {
@@ -107,7 +109,7 @@ public class DisplayJeu extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(Color.RED);
-
+        g.drawImage(imgBackground, 0,0,Main.ISCREEN_WIDTH,Main.ISCREEN_HEIGHT,null);
 
 
         g.drawString(imgCarteActive, rZonePaquet.posx(), rZonePaquet.posy());
