@@ -19,10 +19,10 @@ public class DisplayJeu extends JPanel {
     private Image imgCarteNull;
     private Image imgZoneJoueur;
     private Image imgBackground;
-    private String imgCarteActive = "pigez une carte";
+    private String sCarteActive = "pigez une carte";
     boolean bPigerEnCours = false;
     boolean bTourJ1 = true;
-    boolean bPremierTour = true;
+
 
     int centerX = Main.ISCREEN_WIDTH / 2;
     int centerY = Main.ISCREEN_HEIGHT / 2;
@@ -85,25 +85,21 @@ public class DisplayJeu extends JPanel {
                 if (rZonePaquet.contient(e.getPoint()) && !bPigerEnCours) {
                     bPigerEnCours = true;
 
-                    if (bPremierTour) {
-                        oJoueurActuel = oPartie.getaJoueurs().get(0);
-                        IO.println(oJoueurActuel + " bPremierTour");
-                        bPremierTour = false;
-                    } else {
+
                         if (bTourJ1) {
                             bTourJ1 = false;
                             oJoueurActuel = oPartie.getaJoueurs().get(0);
-                            IO.println(oJoueurActuel + " if");
+//                            IO.println(oJoueurActuel + " if");
                         } else {
                             oJoueurActuel = oPartie.getaJoueurs().get(1);
                             bTourJ1 = true;
-                            IO.println(oJoueurActuel + " else");
+//                            IO.println(oJoueurActuel + " else");
                         }
-                    }
+
 
 
                     oCarteActive = oPartie.getoPaquet().piger();
-                    imgCarteActive = (oCarteActive != null)
+                    sCarteActive = (oCarteActive != null)
                             ? oCarteActive.getiValeurString()
                             : "paquet vide";
                     repaint();
@@ -120,11 +116,17 @@ public class DisplayJeu extends JPanel {
 
                         if (posCarteActuelle.contient(e.getPoint())) {
                             // Mettre la carte actuelle dans la defausse
-
+                            oDefausse.AjouterCarte(carteActuelle);
                             // Remplacer par la carte active
-                            IO.println(posCarteActuelle + " ICI B");
+                            oMainJoueurActuel.remove(j);
+                            oMainJoueurActuel.add(j,oCarteActive);
+
+
                             bPigerEnCours = false;
+//                            IO.println(posCarteActuelle + " ICI B");
                             IO.println(carteActuelle);
+                            IO.println(oMainJoueurActuel);
+                            repaint();
                         }
                     }//FIN for
 
@@ -157,7 +159,7 @@ public class DisplayJeu extends JPanel {
         g.drawImage(imgBackground, 0, 0, Main.ISCREEN_WIDTH, Main.ISCREEN_HEIGHT, null);
 
 
-        g.drawString(imgCarteActive, rZonePaquet.posx(), rZonePaquet.posy());
+        g.drawString(sCarteActive, rZonePaquet.posx(), rZonePaquet.posy());
 
         g.drawImage(imgCarteFaceDown, rZonePaquet.posx(), rZonePaquet.posy(), rZonePaquet.width(), rZonePaquet.height(), null);
         g.drawImage(imgCarte, rZoneDefausse.posx(), rZoneDefausse.posy(), rZoneDefausse.width(), rZoneDefausse.height(), null);
@@ -168,7 +170,7 @@ public class DisplayJeu extends JPanel {
             List<Joueur.Zone> aPositionCartesJoueurActuel = oJoueurActuel.getaPositionCartes();
             g.setColor(Color.RED);
             g.drawImage(imgZoneJoueur, rZoneJoueur.posx(), rZoneJoueur.posy(), rZoneJoueur.width(), rZoneJoueur.height(), null);
-            g.setColor(Color.black);
+//            g.setColor(Color.black);
 //            Point[] points = rZoneJoueur.getPointsCartes();
             List<Carte> oMainJoueurActuel = oJoueurActuel.getaMainJoueur();
 
@@ -177,10 +179,11 @@ public class DisplayJeu extends JPanel {
 
                 Carte carteActuelle = oMainJoueurActuel.get(j);
                 if (!carteActuelle.bEstNull) {
-                    g.drawString(carteActuelle.getiValeurString(), p.posx(), p.posy());
-                    g.drawImage(imgCarte, p.posx(), p.posy(), 75, 100, null);
+                    g.drawImage(imgCarteFaceDown, p.posx(), p.posy(), Main.ICARTE_WIDTH, Main.ICARTE_HEIGHT, null);
+                    g.drawString(carteActuelle.getiValeurString(), p.posx() + (Main.ICARTE_WIDTH / 2) , p.posy() + (Main.ICARTE_HEIGHT / 2));
+
                 } else {
-                    g.drawImage(imgCarteNull, p.posx(), p.posy(), 75, 100, null);
+                    g.drawImage(imgCarteNull, p.posx(), p.posy(), Main.ICARTE_WIDTH, Main.ICARTE_HEIGHT, null);
                 }
 
             }

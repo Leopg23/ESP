@@ -2,19 +2,20 @@ package Ouistiti;
 
 import java.util.List;
 
-public class Defausse extends Tas{
+public class Defausse extends Tas {
 
-    public Defausse(List<Carte> aCartes){
+    public Defausse(List<Carte> aCartes) {
         super(aCartes);
         this.aCartes = aCartes;
     }
 
-    public void AjouterCarte(Carte oCarte){
+    public void AjouterCarte(Carte oCarte) {
         this.aCartes.add(oCarte);
     }
-    public Carte regarderTop(){
+
+    public Carte regarderTop() {
         Carte cartePige = null;
-        cartePige = new Carte(cartePige.getiValeur(), cartePige.isbFaceVisible(),false);
+        cartePige = new Carte(cartePige.getiValeur(), cartePige.isbFaceVisible(), false);
         return cartePige;
     }
 }
