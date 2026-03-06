@@ -23,7 +23,7 @@ public class Main {
         List<Carte> aMainJoueur = new ArrayList<>();
         boolean bFaceVisible = true;
         for (int i = 0; i < ITAILLE_MAIN; i++) {
-                aMainJoueur.add(new Carte(i, bFaceVisible, false));
+                aMainJoueur.add(new Carte(i, "",bFaceVisible, false));
         }
 
         List<Joueur> aJoueurs = new ArrayList<>();
@@ -39,7 +39,22 @@ public class Main {
         Paquet oPaquet = new Paquet(aCartePaquet);
 
         for (int i = 1; i <= INOMBRE_CARTES_TOTAL; i++) {
-            oPaquet.aCartes.add(new Carte(i,false , false));
+            String signe = "";
+            int valeure = 0;
+            if(i<=13){
+                signe = "❤️";
+                valeure = i;
+            } else if (i<=26) {
+                signe = "♠️";
+                valeure = i - 13;
+            } else if (i<=39) {
+                signe = "♦️";
+                valeure = i - 26;
+            } else {
+                signe = "♣️";
+                valeure = i - 39;
+            }
+            oPaquet.aCartes.add(new Carte(valeure,signe,false , false));
         }
 
         Defausse oDefausse = new Defausse(aCarteDefausse);
@@ -48,7 +63,6 @@ public class Main {
         oPartie.initialierPartie();
         IO.println(oPartie);
 
-        oPartie.initialierPartie();
         SwingUtilities.invokeLater(() -> GererFenetre(oPartie));
     }
 

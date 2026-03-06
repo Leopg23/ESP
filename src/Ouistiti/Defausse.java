@@ -9,13 +9,15 @@ public class Defausse extends Tas {
         this.aCartes = aCartes;
     }
 
-    public void AjouterCarte(Carte oCarte) {
+    public void ajouterCarte(Carte oCarte) {
         this.aCartes.add(oCarte);
     }
 
     public Carte regarderTop() {
-        Carte cartePige = null;
-        cartePige = new Carte(cartePige.getiValeur(), cartePige.isbFaceVisible(), false);
-        return cartePige;
+        Carte oCarteTop = aCartes.size() != 0
+                ? aCartes.get(aCartes.size() - 1)
+                : new Carte(999,"",false,false);
+
+        return oCarteTop;
     }
 }

@@ -17,7 +17,7 @@ public class Partie {
     }
     public void initialierPartie() {
         IO.println("Partie Commencée");
-        oPaquet.melanger();
+//        oPaquet.melanger();
 
         for(int i = 0; i < aJoueurs.size();i++){
             Joueur oJoueurActuel = aJoueurs.get(i);

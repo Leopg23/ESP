@@ -2,12 +2,15 @@ package Ouistiti;
 
 public class Carte {
     int iValeur;
+    String sSigne;
     boolean bFaceVisible;
     boolean bEstNull;
-    public Carte(int iValeur, boolean bFaceVisible, boolean bEstNull) {
+    public Carte(int iValeur, String sSigne, boolean bFaceVisible, boolean bEstNull) {
         this.iValeur = iValeur;
+        this.sSigne = sSigne;
         this.bFaceVisible = bFaceVisible;
         this.bEstNull = bEstNull;
+
     }
 
     public record Zone(int posx, int posy, int width, int height) {
@@ -45,8 +48,16 @@ public class Carte {
         this.bEstNull = bEstNull;
     }
 
+    public String getsSigne() {
+        return sSigne;
+    }
+
+    public void setsSigne(String sSigne) {
+        this.sSigne = sSigne;
+    }
+
     @Override
     public String toString() {
-        return "Carte{" + getiValeur() + ", " + isbFaceVisible() + ", " + isbEstNull() + "}";
+        return "Carte{" + getiValeur() + ", " + getsSigne() + ", " + isbFaceVisible() + ", " + isbEstNull() + "}";
     }
 }

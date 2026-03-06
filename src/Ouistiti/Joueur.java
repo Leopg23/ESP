@@ -48,19 +48,19 @@ public class Joueur {
 
     public Carte pigerPaquet(Paquet paquet) {
         Carte cartePige = null;
-        cartePige = new Carte(cartePige.getiValeur(), cartePige.isbFaceVisible(),false);
+//        cartePige = new Carte(cartePige.getiValeur(), cartePige.isbFaceVisible(),false);
         return cartePige;
     }
 
     public Carte prendreDefausse(Defausse defausse) {
         Carte cartePige = null;
-        cartePige = new Carte(cartePige.getiValeur(), cartePige.isbFaceVisible(),false);
+//        cartePige = new Carte(cartePige.getiValeur(), cartePige.isbFaceVisible(),false);
         return cartePige;
     }
 
     public Carte echangerCarte(int index, Carte nouvelle) {
         Carte cartePige = null;
-        cartePige = new Carte(cartePige.getiValeur(), cartePige.isbFaceVisible(),false);
+//        cartePige = new Carte(cartePige.getiValeur(), cartePige.isbFaceVisible(),false);
         return cartePige;
     }
 

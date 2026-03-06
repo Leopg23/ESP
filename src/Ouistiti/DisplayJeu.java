@@ -19,10 +19,17 @@ public class DisplayJeu extends JPanel {
     private Image imgCarteNull;
     private Image imgZoneJoueur;
     private Image imgBackground;
+    private Image imgHighlightCartes;
+    private Image imgHighlightDeffause;
+    private Image imgHighlightPaquet;
+    private Image imgHighlightPlayer1;
+    private Image imgHighlightPlayer2;
+    private Image imgHighlightTas;
+
     private String sCarteActive = "pigez une carte";
     boolean bPigerEnCours = false;
+    boolean bRevelerCartePaquet = false;
     boolean bTourJ1 = true;
-
 
     int centerX = Main.ISCREEN_WIDTH / 2;
     int centerY = Main.ISCREEN_HEIGHT / 2;
@@ -56,7 +63,7 @@ public class DisplayJeu extends JPanel {
             List<Joueur.Zone> aPositionCartesJoueurActuel = new ArrayList<>();
             for (int j = 0; j < Main.ITAILLE_MAIN; j++) {
                 Point p = points[j];
-                aPositionCartesJoueurActuel.add(new Joueur.Zone(p.x, p.y, 75, 100));
+                aPositionCartesJoueurActuel.add(new Joueur.Zone(p.x, p.y, Main.ICARTE_WIDTH, Main.ICARTE_HEIGHT));
             }
             oJoueurActuel.setaPositionCartes(aPositionCartesJoueurActuel);
             IO.println("test1-------" + oJoueurActuel.getaPositionCartes());
@@ -68,6 +75,15 @@ public class DisplayJeu extends JPanel {
             imgCarteFaceDown = ImageIO.read(new File("res/carte_verso.png"));
             imgCarteNull = ImageIO.read(new File("res/null.png"));
             imgZoneJoueur = ImageIO.read(new File("res/zoneJoueur.png"));
+
+
+            imgHighlightCartes = ImageIO.read(new File("res/highlightCartes.png"));
+            imgHighlightDeffause = ImageIO.read(new File("res/highlightDeffause.png"));
+            imgHighlightPaquet = ImageIO.read(new File("res/highlightPaquet.png"));
+            imgHighlightPlayer1 = ImageIO.read(new File("res/highlightPlayer1.png"));
+            imgHighlightPlayer2 = ImageIO.read(new File("res/highlightPlayer2.png"));
+            imgHighlightTas = ImageIO.read(new File("res/highlightTas.png"));
+
         } catch (IOException e) {
             IO.println(e.getMessage());
         }
@@ -77,38 +93,23 @@ public class DisplayJeu extends JPanel {
             Joueur oJoueurActuel = null;
             Carte oCarteActive = null;
             Defausse oDefausse = oPartie.getoDefausse();
+
             @Override
             public void mousePressed(MouseEvent e) {
 
                 List<Carte> oMainJoueurActuel;
                 List<Joueur.Zone> aPositionCartesJoueurActuel;
-                if (rZonePaquet.contient(e.getPoint()) && !bPigerEnCours) {
-                    bPigerEnCours = true;
+                if (bPigerEnCours) {
 
+                    if (rZoneDefausse.contient(e.getPoint())) {
+                        oDefausse.ajouterCarte(oCarteActive);
+                        bPigerEnCours = false;
+                        bRevelerCartePaquet = false;
+                        repaint();
+                    }
 
-                        if (bTourJ1) {
-                            bTourJ1 = false;
-                            oJoueurActuel = oPartie.getaJoueurs().get(0);
-//                            IO.println(oJoueurActuel + " if");
-                        } else {
-                            oJoueurActuel = oPartie.getaJoueurs().get(1);
-                            bTourJ1 = true;
-//                            IO.println(oJoueurActuel + " else");
-                        }
-
-
-
-                    oCarteActive = oPartie.getoPaquet().piger();
-                    sCarteActive = (oCarteActive != null)
-                            ? oCarteActive.getiValeurString()
-                            : "paquet vide";
-                    repaint();
-                }
-
-                if (oJoueurActuel != null) {
                     oMainJoueurActuel = oJoueurActuel.getaMainJoueur();
                     aPositionCartesJoueurActuel = oJoueurActuel.getaPositionCartes();
-
 
                     for (int j = 0; j < oMainJoueurActuel.size(); j++) {
                         Carte carteActuelle = oMainJoueurActuel.get(j);
@@ -116,60 +117,163 @@ public class DisplayJeu extends JPanel {
 
                         if (posCarteActuelle.contient(e.getPoint())) {
                             // Mettre la carte actuelle dans la defausse
-                            oDefausse.AjouterCarte(carteActuelle);
+                            oDefausse.ajouterCarte(carteActuelle);
                             // Remplacer par la carte active
                             oMainJoueurActuel.remove(j);
-                            oMainJoueurActuel.add(j,oCarteActive);
+                            oMainJoueurActuel.add(j, oCarteActive);
 
 
                             bPigerEnCours = false;
-//                            IO.println(posCarteActuelle + " ICI B");
+                            bRevelerCartePaquet = false;
+//                          IO.println(posCarteActuelle + " ICI B");
                             IO.println(carteActuelle);
                             IO.println(oMainJoueurActuel);
                             repaint();
                         }
                     }//FIN for
-
-
-                } else {
-                    IO.println(oJoueurActuel);
                 }
+
+                // Si on clique sur le paquet ou la deffause pour piger
+                if ((rZonePaquet.contient(e.getPoint()) || rZoneDefausse.contient(e.getPoint())) && !bPigerEnCours) {
+
+                    // Code specifique a si on clique sur le paquet
+                    if (rZonePaquet.contient(e.getPoint())) {
+                        bRevelerCartePaquet = true;
+                        oCarteActive = oPartie.getoPaquet().piger();
+                        IO.println(bPigerEnCours);
+                    }
+
+                    // Code specifique a si on clique sur la defausse
+                    if (rZoneDefausse.contient(e.getPoint()) && !oDefausse.aCartes.isEmpty()) {
+                        oCarteActive = oPartie.getoDefausse().regarderTop();
+                        IO.println(oCarteActive);
+                    }
+
+                    // Code pour les deux
+                    bPigerEnCours = true;
+
+                    if (bTourJ1) {
+                        bTourJ1 = false;
+                        oJoueurActuel = oPartie.getaJoueurs().get(0);
+//                            IO.println(oJoueurActuel + " if");
+                    } else {
+                        oJoueurActuel = oPartie.getaJoueurs().get(1);
+                        bTourJ1 = true;
+//                            IO.println(oJoueurActuel + " else");
+                    }
+
+
+                    sCarteActive = (oCarteActive != null)
+                            ? oCarteActive.getiValeurString() + " " + oCarteActive.getsSigne()
+                            : "paquet vide";
+
+
+                    repaint();
+                }
+
+
             }
         });
-
-//        for (Joueur.Zone z : aZonesJoueurs){
-//            this.addMouseListener(new MouseAdapter() {
-//                @Override
-//                public void mousePressed(MouseEvent e) {
-//                    if (z.contient(e.getPoint())) {
-//
-//                        test = !test;
-//                        repaint();
-//                    }
-//                }
-//            });
-//        }
 
     }
 
     @Override
     protected void paintComponent(Graphics g) {
+
+        /* rectangles a fill pour les highlights de differentes zones :
+
+        zone paquet ---->g.fillRect(
+                            800,
+                            466,
+                            118,
+                            147
+                        );
+
+
+         */
+
+        Color highlightColor = Color.decode("#61e6ec");
         super.paintComponent(g);
-        g.setColor(Color.RED);
-        g.drawImage(imgBackground, 0, 0, Main.ISCREEN_WIDTH, Main.ISCREEN_HEIGHT, null);
+        g.setColor(highlightColor);
 
+        if (!bPigerEnCours) {
+            g.drawImage(imgBackground,
+                    0,
+                    0,
+                    Main.ISCREEN_WIDTH,
+                    Main.ISCREEN_HEIGHT,
+                    null
+            );
+        }
+        else{
+            g.fillRect(
+                    1001,
+                    466,
+                    118,
+                    147
+            );
+            g.drawImage(imgBackground,
+                    0,
+                    0,
+                    Main.ISCREEN_WIDTH,
+                    Main.ISCREEN_HEIGHT,
+                    null
+            );
 
-        g.drawString(sCarteActive, rZonePaquet.posx(), rZonePaquet.posy());
+        }
 
-        g.drawImage(imgCarteFaceDown, rZonePaquet.posx(), rZonePaquet.posy(), rZonePaquet.width(), rZonePaquet.height(), null);
-        g.drawImage(imgCarte, rZoneDefausse.posx(), rZoneDefausse.posy(), rZoneDefausse.width(), rZoneDefausse.height(), null);
+        g.drawImage(
+                bRevelerCartePaquet ? imgCarte : imgCarteFaceDown,
+                rZonePaquet.posx(),
+                rZonePaquet.posy(),
+                rZonePaquet.width(),
+                rZonePaquet.height(),
+                null
+        );
+
+        if (bRevelerCartePaquet) {
+            g.drawString(
+                    sCarteActive,
+                    rZonePaquet.posx() + (rZonePaquet.width() / 2),
+                    rZonePaquet.posy() + (rZonePaquet.height() / 2)
+            );
+        }
+
+        g.drawImage(
+                imgCarte,
+                rZoneDefausse.posx(),
+                rZoneDefausse.posy(),
+                rZoneDefausse.width(),
+                rZoneDefausse.height(),
+                null
+        );
+
+        g.drawString(
+                !oPartie.getoDefausse().getaCartes().isEmpty()
+                        ? oPartie.getoDefausse().regarderTop().getiValeurString()
+                        : "",
+                rZoneDefausse.posx() + (rZoneDefausse.width() / 2),
+                rZoneDefausse.posy() + (rZoneDefausse.height() / 2)
+        );
+
+        g.drawString(oPartie.getoDefausse().regarderTop().getsSigne(),
+                rZoneDefausse.posx() + (rZoneDefausse.width() / 2),
+                rZoneDefausse.posy() + (rZoneDefausse.height() / 2) + 10
+        );
 
         for (int i = 0; i < aZonesJoueurs.size(); i++) {
             Joueur.Zone rZoneJoueur = aZonesJoueurs.get(i);
             Joueur oJoueurActuel = oPartie.getaJoueurs().get(i);
             List<Joueur.Zone> aPositionCartesJoueurActuel = oJoueurActuel.getaPositionCartes();
             g.setColor(Color.RED);
-            g.drawImage(imgZoneJoueur, rZoneJoueur.posx(), rZoneJoueur.posy(), rZoneJoueur.width(), rZoneJoueur.height(), null);
+            g.drawImage(
+                    imgZoneJoueur,
+                    rZoneJoueur.posx(),
+                    rZoneJoueur.posy(),
+                    rZoneJoueur.width(),
+                    rZoneJoueur.height(), null
+
+            );
 //            g.setColor(Color.black);
 //            Point[] points = rZoneJoueur.getPointsCartes();
             List<Carte> oMainJoueurActuel = oJoueurActuel.getaMainJoueur();
@@ -179,11 +283,30 @@ public class DisplayJeu extends JPanel {
 
                 Carte carteActuelle = oMainJoueurActuel.get(j);
                 if (!carteActuelle.bEstNull) {
-                    g.drawImage(imgCarteFaceDown, p.posx(), p.posy(), Main.ICARTE_WIDTH, Main.ICARTE_HEIGHT, null);
-                    g.drawString(carteActuelle.getiValeurString(), p.posx() + (Main.ICARTE_WIDTH / 2) , p.posy() + (Main.ICARTE_HEIGHT / 2));
+                    g.drawImage(
+                            imgCarteFaceDown,
+                            p.posx(),
+                            p.posy(),
+                            p.width(),
+                            p.height(),
+                            null
+                    );
+
+                    g.drawString(
+                            carteActuelle.getiValeurString() + " " + carteActuelle.getsSigne(),
+                            p.posx() + (p.width() / 2),
+                            p.posy() + (p.height() / 2)
+                    );
 
                 } else {
-                    g.drawImage(imgCarteNull, p.posx(), p.posy(), Main.ICARTE_WIDTH, Main.ICARTE_HEIGHT, null);
+                    g.drawImage(
+                            imgCarteNull,
+                            p.posx(),
+                            p.posy(),
+                            p.width(),
+                            p.height(),
+                            null
+                    );
                 }
 
             }
