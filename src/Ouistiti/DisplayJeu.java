@@ -21,6 +21,8 @@ public class DisplayJeu extends JPanel {
     private Image imgBackground;
     private String imgCarteActive = "pigez une carte";
     boolean bPigerEnCours = false;
+    boolean bTourJ1 = true;
+    boolean bPremierTour = true;
 
     int centerX = Main.ISCREEN_WIDTH / 2;
     int centerY = Main.ISCREEN_HEIGHT / 2;
@@ -47,17 +49,17 @@ public class DisplayJeu extends JPanel {
             int py = centerY + dy[i];
 
             aZonesJoueurs.add(new Joueur.Zone(px, py, Main.IZONEJOUEUR[0], Main.IZONEJOUEUR[1]));
-
+            List<Joueur> aJoueurs = oPartie.getaJoueurs();
             Joueur oJoueurActuel = oPartie.getaJoueurs().get(i);
             Joueur.Zone rZoneJoueur = aZonesJoueurs.get(i);
             Point[] points = rZoneJoueur.getPointsCartes();
             List<Joueur.Zone> aPositionCartesJoueurActuel = new ArrayList<>();
             for (int j = 0; j < Main.ITAILLE_MAIN; j++) {
                 Point p = points[j];
-                aPositionCartesJoueurActuel.add(new Joueur.Zone( p.x , p.y , 75, 100));
+                aPositionCartesJoueurActuel.add(new Joueur.Zone(p.x, p.y, 75, 100));
             }
             oJoueurActuel.setaPositionCartes(aPositionCartesJoueurActuel);
-            IO.println( "test1-------"+oJoueurActuel.getaPositionCartes());
+            IO.println("test1-------" + oJoueurActuel.getaPositionCartes());
         }
 
         try {
@@ -72,23 +74,66 @@ public class DisplayJeu extends JPanel {
 
 
         this.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    if (rZonePaquet.contient(e.getPoint()) && bPigerEnCours) {
-                        bPigerEnCours = !bPigerEnCours;
-                        Carte carteActive = oPartie.getoPaquet().piger();
+            Joueur oJoueurActuel = null;
+            Carte oCarteActive = null;
+            Defausse oDefausse = oPartie.getoDefausse();
+            @Override
+            public void mousePressed(MouseEvent e) {
 
-                        imgCarteActive =    (carteActive != null)
-                                            ? carteActive.getiValeurString()
-                                            : "paquet vide";
-                        repaint();
-                    }
-                    for(int i = 0; i < Main.INOMBRE_JOUEURS; i++){
-                        Joueur oJoueurActuel = oPartie.getaJoueurs().get(i);
+                List<Carte> oMainJoueurActuel;
+                List<Joueur.Zone> aPositionCartesJoueurActuel;
+                if (rZonePaquet.contient(e.getPoint()) && !bPigerEnCours) {
+                    bPigerEnCours = true;
 
+                    if (bPremierTour) {
+                        oJoueurActuel = oPartie.getaJoueurs().get(0);
+                        IO.println(oJoueurActuel + " bPremierTour");
+                        bPremierTour = false;
+                    } else {
+                        if (bTourJ1) {
+                            bTourJ1 = false;
+                            oJoueurActuel = oPartie.getaJoueurs().get(0);
+                            IO.println(oJoueurActuel + " if");
+                        } else {
+                            oJoueurActuel = oPartie.getaJoueurs().get(1);
+                            bTourJ1 = true;
+                            IO.println(oJoueurActuel + " else");
+                        }
                     }
+
+
+                    oCarteActive = oPartie.getoPaquet().piger();
+                    imgCarteActive = (oCarteActive != null)
+                            ? oCarteActive.getiValeurString()
+                            : "paquet vide";
+                    repaint();
                 }
-            });
+
+                if (oJoueurActuel != null) {
+                    oMainJoueurActuel = oJoueurActuel.getaMainJoueur();
+                    aPositionCartesJoueurActuel = oJoueurActuel.getaPositionCartes();
+
+
+                    for (int j = 0; j < oMainJoueurActuel.size(); j++) {
+                        Carte carteActuelle = oMainJoueurActuel.get(j);
+                        Joueur.Zone posCarteActuelle = aPositionCartesJoueurActuel.get(j);
+
+                        if (posCarteActuelle.contient(e.getPoint())) {
+                            // Mettre la carte actuelle dans la defausse
+
+                            // Remplacer par la carte active
+                            IO.println(posCarteActuelle + " ICI B");
+                            bPigerEnCours = false;
+                            IO.println(carteActuelle);
+                        }
+                    }//FIN for
+
+
+                } else {
+                    IO.println(oJoueurActuel);
+                }
+            }
+        });
 
 //        for (Joueur.Zone z : aZonesJoueurs){
 //            this.addMouseListener(new MouseAdapter() {
@@ -109,10 +154,11 @@ public class DisplayJeu extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         g.setColor(Color.RED);
-        g.drawImage(imgBackground, 0,0,Main.ISCREEN_WIDTH,Main.ISCREEN_HEIGHT,null);
+        g.drawImage(imgBackground, 0, 0, Main.ISCREEN_WIDTH, Main.ISCREEN_HEIGHT, null);
 
 
-//        g.drawString(imgCarteActive, rZonePaquet.posx(), rZonePaquet.posy());
+        g.drawString(imgCarteActive, rZonePaquet.posx(), rZonePaquet.posy());
+
         g.drawImage(imgCarteFaceDown, rZonePaquet.posx(), rZonePaquet.posy(), rZonePaquet.width(), rZonePaquet.height(), null);
         g.drawImage(imgCarte, rZoneDefausse.posx(), rZoneDefausse.posy(), rZoneDefausse.width(), rZoneDefausse.height(), null);
 
@@ -121,7 +167,7 @@ public class DisplayJeu extends JPanel {
             Joueur oJoueurActuel = oPartie.getaJoueurs().get(i);
             List<Joueur.Zone> aPositionCartesJoueurActuel = oJoueurActuel.getaPositionCartes();
             g.setColor(Color.RED);
-            g.drawImage(imgZoneJoueur,rZoneJoueur.posx(), rZoneJoueur.posy(), rZoneJoueur.width(), rZoneJoueur.height(),null);
+            g.drawImage(imgZoneJoueur, rZoneJoueur.posx(), rZoneJoueur.posy(), rZoneJoueur.width(), rZoneJoueur.height(), null);
             g.setColor(Color.black);
 //            Point[] points = rZoneJoueur.getPointsCartes();
             List<Carte> oMainJoueurActuel = oJoueurActuel.getaMainJoueur();
@@ -131,10 +177,9 @@ public class DisplayJeu extends JPanel {
 
                 Carte carteActuelle = oMainJoueurActuel.get(j);
                 if (!carteActuelle.bEstNull) {
-                    g.drawString(carteActuelle.getiValeurString(), p.posx(), p.posy() );
+                    g.drawString(carteActuelle.getiValeurString(), p.posx(), p.posy());
                     g.drawImage(imgCarte, p.posx(), p.posy(), 75, 100, null);
-                }
-                else{
+                } else {
                     g.drawImage(imgCarteNull, p.posx(), p.posy(), 75, 100, null);
                 }
 
@@ -147,7 +192,7 @@ public class DisplayJeu extends JPanel {
     }
 
 
-    //Getters/Setters
+//Getters/Setters
 
     public Partie getoPartie() {
         return oPartie;

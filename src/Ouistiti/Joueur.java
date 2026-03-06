@@ -33,6 +33,11 @@ public class Joueur {
                     new Point(posx + ((width/4) *3), posy + ((height/4) *3))    // Bas Droite
             };
         }
+
+        public boolean contient(Point point) {
+            return point.x >= posx && point.x <= posx + width &&
+                    point.y >= posy && point.y <= posy + height;
+        }
     }
 
 

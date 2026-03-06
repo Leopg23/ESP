@@ -9,6 +9,9 @@ public class Defausse extends Tas{
         this.aCartes = aCartes;
     }
 
+    public void AjouterCarte(Carte oCarte){
+        this.aCartes.add(oCarte);
+    }
     public Carte regarderTop(){
         Carte cartePige = null;
         cartePige = new Carte(cartePige.getiValeur(), cartePige.isbFaceVisible(),false);
