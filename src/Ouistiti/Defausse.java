@@ -15,7 +15,7 @@ public class Defausse extends Tas {
 
     public Carte regarderTop() {
         Carte oCarteTop = aCartes.size() != 0
-                ? aCartes.get(aCartes.size() - 1)
+                ? aCartes.getLast()
                 : new Carte(999,"",false,false);
 
         return oCarteTop;

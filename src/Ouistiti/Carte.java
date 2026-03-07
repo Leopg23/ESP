@@ -1,10 +1,10 @@
 package Ouistiti;
 
 public class Carte {
-    int iValeur;
-    String sSigne;
-    boolean bFaceVisible;
-    boolean bEstNull;
+    private int iValeur;
+    private String sSigne;
+    private boolean bFaceVisible;
+    private boolean bEstNull;
     public Carte(int iValeur, String sSigne, boolean bFaceVisible, boolean bEstNull) {
         this.iValeur = iValeur;
         this.sSigne = sSigne;

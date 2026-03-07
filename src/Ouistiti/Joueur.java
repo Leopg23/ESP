@@ -10,6 +10,7 @@ public class Joueur {
     private boolean bPeutJeterCarte;
     private int iScoreTotal;
     private List<Zone> aPositionCartes = new ArrayList<>();
+    private int dernierEssai = 999;
     public Joueur(String sNomJoueur, List<Carte> aMainJoueur, boolean bPeutJeterCarte, int iScoreTotal) {
         this.sNomJoueur = sNomJoueur;
         this.aMainJoueur = aMainJoueur;
@@ -69,6 +70,13 @@ public class Joueur {
 
     public int calculerSomme() {
         int sommeCalcule = 0;
+        for (int i = 0; i < aMainJoueur.size(); i++) {
+            Carte oCarteActuelle = aMainJoueur.get(i);
+            if (!oCarteActuelle.isbEstNull()) {
+                sommeCalcule += oCarteActuelle.getiValeur();
+            }
+        }
+
         return sommeCalcule;
     }
 
@@ -78,6 +86,14 @@ public class Joueur {
 
     }
     //Getters/Setters
+
+    public int getDernierEssai() {
+        return dernierEssai;
+    }
+
+    public void setDernierEssai(int dernierEssai) {
+        this.dernierEssai = dernierEssai;
+    }
 
     public String getsNomJoueur() {
         return sNomJoueur;

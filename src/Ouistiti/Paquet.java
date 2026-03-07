@@ -28,5 +28,11 @@ public class Paquet extends Tas{
             return cartePige;
     }
 
+    public Carte regarderTop() {
+        Carte oCarteTop = aCartes.size() != 0
+                ? aCartes.getFirst()
+                : new Carte(999,"",false,false);
 
+        return oCarteTop;
+    }
 }
