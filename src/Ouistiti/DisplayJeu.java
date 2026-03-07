@@ -240,6 +240,7 @@ public class DisplayJeu extends JPanel {
                     118,
                     147
             );
+
             g.drawImage(
                     imgBackground,
                     0,
@@ -248,6 +249,16 @@ public class DisplayJeu extends JPanel {
                     Main.ISCREEN_HEIGHT,
                     null
             );
+
+            g.drawImage(
+                    imgCarteNull,
+                    rZoneDefausse.posx(),
+                    rZoneDefausse.posy(),
+                    rZoneDefausse.width(),
+                    rZoneDefausse.height(),
+                    null
+            );
+
         } else if (!bPigerEnCours) {
             g.drawImage(
                     imgBackground,
@@ -257,6 +268,27 @@ public class DisplayJeu extends JPanel {
                     Main.ISCREEN_HEIGHT,
                     null
             );
+
+            if(iNbrTour !=1){
+                g.drawImage(
+                        imgCarte,
+                        rZoneDefausse.posx(),
+                        rZoneDefausse.posy(),
+                        rZoneDefausse.width(),
+                        rZoneDefausse.height(),
+                        null
+                );
+            } else {
+                g.drawImage(
+                        imgCarteNull,
+                        rZoneDefausse.posx(),
+                        rZoneDefausse.posy(),
+                        rZoneDefausse.width(),
+                        rZoneDefausse.height(),
+                        null
+                );
+            }
+
         } else {
             // highlight sur le paquet
             g.fillRect(
@@ -284,6 +316,14 @@ public class DisplayJeu extends JPanel {
                     null
             );
 
+            g.drawImage(
+                    imgCarte,
+                    rZoneDefausse.posx(),
+                    rZoneDefausse.posy(),
+                    rZoneDefausse.width(),
+                    rZoneDefausse.height(),
+                    null
+            );
         }
 
         g.drawImage(
@@ -300,14 +340,8 @@ public class DisplayJeu extends JPanel {
             dessinerTextCarte(g,metrics,highlightColor,oCarte,rZonePaquet);
         }
 
-        g.drawImage(
-                imgCarte,
-                rZoneDefausse.posx(),
-                rZoneDefausse.posy(),
-                rZoneDefausse.width(),
-                rZoneDefausse.height(),
-                null
-        );
+
+
 
 
         if (!oPartie.getoDefausse().getaCartes().isEmpty()) {
