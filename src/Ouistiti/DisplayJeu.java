@@ -474,7 +474,7 @@ public class DisplayJeu extends JPanel {
                     );
 
 
-                    dessinerTextCarte(g, metrics, highlightColor, carteActuelle, p);
+//                    dessinerTextCarte(g, metrics, highlightColor, carteActuelle, p);
 
 
                 } else {
