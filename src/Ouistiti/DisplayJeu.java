@@ -101,7 +101,7 @@ public class DisplayJeu extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
-                IO.println(bPigerEnCours);
+//                IO.println(oCarteActive);
                 List<Carte> oMainJoueurActuel;
                 List<Joueur.Zone> aPositionCartesJoueurActuel;
                 if (!bPigerEnCours) {
@@ -223,13 +223,16 @@ public class DisplayJeu extends JPanel {
 
 
         Color highlightColor = Color.decode("#61e6ec");
-        g.setColor(Color.BLACK);
+        Color couleurVert = Color.decode("#41662a");
+        Color couleurMauve = Color.decode("#8b1786");
+
+        g.setColor(highlightColor);
 
         g.setFont(fMonospaced);
         FontMetrics metrics = Toolkit.getDefaultToolkit().getFontMetrics(fMonospaced);
 
         if (iNbrTour == 0) {
-            IO.println("sa se rend ici");
+
             // highlight sur le paquet
             g.fillRect(
                     800,
@@ -246,10 +249,6 @@ public class DisplayJeu extends JPanel {
                     null
             );
         } else if (!bPigerEnCours) {
-            Joueur.Zone rZoneJoueurActuel = null;
-            for(int i = 0; i < Main.INOMBRE_JOUEURS; i++){
-                rZoneJoueurActuel = aZonesJoueurs.get(i);
-            }
             g.drawImage(
                     imgBackground,
                     0,
@@ -297,11 +296,8 @@ public class DisplayJeu extends JPanel {
         );
 
         if (bRevelerCartePaquet) {
-            g.drawString(
-                    sCarteActive,
-                    rZonePaquet.posx() + (rZonePaquet.width() / 2),
-                    rZonePaquet.posy() + (rZonePaquet.height() / 2)
-            );
+            Carte oCarte = oPartie.getoPaquet().aCartes.getFirst();
+            dessinerTextCarte(g,metrics,highlightColor,oCarte,rZonePaquet);
         }
 
         g.drawImage(
@@ -316,7 +312,7 @@ public class DisplayJeu extends JPanel {
 
         if (!oPartie.getoDefausse().getaCartes().isEmpty()) {
             Carte oTopCarte = oPartie.getoDefausse().regarderTop();
-            dessinerTextCarte(g,metrics,highlightColor,oTopCarte);
+            dessinerTextCarte(g,metrics,highlightColor,oTopCarte,rZoneDefausse);
         }
 
         for (int i = 0; i < aZonesJoueurs.size(); i++) {
@@ -350,13 +346,11 @@ public class DisplayJeu extends JPanel {
                             null
                     );
 
-                    g.setColor(Color.RED);
-                    g.drawString(
-                            carteActuelle.getiValeurString() + " " + carteActuelle.getsSigne(),
-                            p.posx() + (p.width() / 2),
-                            p.posy() + (p.height() / 2)
-                    );
-                    g.setColor(highlightColor);
+
+                    //dessinerTextCarte(g,metrics,highlightColor,carteActuelle,p);
+
+
+
                 } else {
                     g.drawImage(
                             imgCarteNull,
@@ -389,7 +383,7 @@ public class DisplayJeu extends JPanel {
 
     }
 
-    public void dessinerTextCarte(Graphics g, FontMetrics metrics, Color highlightColor, Carte oCarte){
+    public void dessinerTextCarte(Graphics g, FontMetrics metrics, Color highlightColor, Carte oCarte, Tas.Zone zone){
         int iValeur = oCarte.getiValeur();
         String sValeur = oCarte.getiValeurString();
         String sSigne = oCarte.getsSigne();
@@ -397,7 +391,7 @@ public class DisplayJeu extends JPanel {
         if (Objects.equals(sSigne, "♠️") || Objects.equals(sSigne, "♣️")) {
             g.setColor(Color.BLACK);
         } else {
-            g.setColor(Color.RED);
+            g.setColor(Color.decode("#a6009f"));
         }
 
         if(iValeur == 11){
@@ -411,8 +405,53 @@ public class DisplayJeu extends JPanel {
         int sigLargeur = metrics.stringWidth(sSigne);
         int hauteurTotale = metrics.getHeight();
 
-        int cX = rZoneDefausse.posx() + (rZoneDefausse.width() / 2);
-        int cY = rZoneDefausse.posy() + (rZoneDefausse.height() / 2);
+        int cX = zone.posx() + (zone.width() / 2);
+        int cY = zone.posy() + (zone.height() / 2);
+
+        g.drawString(
+                sValeur,
+                cX - (valLargeur / 2),
+                cY + (hauteurTotale / 4)
+        );
+
+        g.drawString(
+                sSigne,
+                cX - (sigLargeur / 2),
+                cY - (hauteurTotale / 2)
+        );
+
+        g.drawString(sSigne,
+                cX - (sigLargeur / 2),
+                cY + (hauteurTotale)
+        );
+
+        g.setColor(highlightColor);
+    }
+
+    public void dessinerTextCarte(Graphics g, FontMetrics metrics, Color highlightColor, Carte oCarte, Joueur.Zone zone){
+        int iValeur = oCarte.getiValeur();
+        String sValeur = oCarte.getiValeurString();
+        String sSigne = oCarte.getsSigne();
+
+        if (Objects.equals(sSigne, "♠️") || Objects.equals(sSigne, "♣️")) {
+            g.setColor(Color.BLACK);
+        } else {
+            g.setColor(Color.decode("#a6009f"));
+        }
+
+        if(iValeur == 11){
+            sValeur = "J";
+        } else if (iValeur == 12) {
+            sValeur = "Q";
+        } else if (iValeur == 13) {
+            sValeur = "K";
+        }
+        int valLargeur = metrics.stringWidth(sValeur);
+        int sigLargeur = metrics.stringWidth(sSigne);
+        int hauteurTotale = metrics.getHeight();
+
+        int cX = zone.posx() + (zone.width() / 2);
+        int cY = zone.posy() + (zone.height() / 2);
 
         g.drawString(
                 sValeur,
