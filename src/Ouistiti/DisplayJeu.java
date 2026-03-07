@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class DisplayJeu extends JPanel {
@@ -27,18 +28,22 @@ public class DisplayJeu extends JPanel {
     private Image imgHighlightTas;
 
     private String sCarteActive = "pigez une carte";
-    boolean bPigerEnCours = false;
-    boolean bRevelerCartePaquet = false;
-    boolean bTourJ1 = true;
-
-    int centerX = Main.ISCREEN_WIDTH / 2;
-    int centerY = Main.ISCREEN_HEIGHT / 2;
-    int distanceH = Main.ISCREEN_HEIGHT / 3;
-    int distanceW = Main.ISCREEN_WIDTH / 3;
+    private Carte oCarteActive = null;
+    private boolean bPigerEnCours = true;
+    private boolean bRevelerCartePaquet = false;
+    private boolean bTourJ1 = true;
+    private int iNbrTour = 0;
+    private Point pointDernierClic;
+    private ArrayList<int[]> aPosHighlightCartes = new ArrayList<>();
+    private Font fMonospaced = new Font("Monospaced", Font.BOLD, 16);
+    private int centerX = Main.ISCREEN_WIDTH / 2;
+    private int centerY = Main.ISCREEN_HEIGHT / 2;
+    private int distanceH = Main.ISCREEN_HEIGHT / 3;
+    private int distanceW = Main.ISCREEN_WIDTH / 3;
 
     private List<Joueur.Zone> aZonesJoueurs = new ArrayList<>();
-    int[] dx = {0, 0, distanceW, -distanceW};
-    int[] dy = {-distanceH, distanceH, 0, 0};
+    private int[] dx = {0, 0, distanceW, -distanceW};
+    private int[] dy = {-distanceH, distanceH, 0, 0};
 
     Paquet.Zone rZonePaquet = new Tas.Zone(centerX - 100, centerY, Main.ICARTE_WIDTH, Main.ICARTE_HEIGHT);
     Defausse.Zone rZoneDefausse = new Tas.Zone(centerX + 100, centerY, Main.ICARTE_WIDTH, Main.ICARTE_HEIGHT);
@@ -49,6 +54,13 @@ public class DisplayJeu extends JPanel {
         this.setPreferredSize(new Dimension(Main.ISCREEN_WIDTH, Main.ISCREEN_HEIGHT));
         //askip faut une couleure opaque pour eviter des bugs daffichage i guess
         this.setBackground(Color.BLACK);
+        this.aPosHighlightCartes.add(new int[]{55, 15});  // Haut Gauche
+        this.aPosHighlightCartes.add(new int[]{255, 15}); // Haut Droite
+        this.aPosHighlightCartes.add(new int[]{55, 165}); // Bas Gauche
+        this.aPosHighlightCartes.add(new int[]{255, 165}); // Bas Droite
+
+
+
 
 
         for (int i = 0; i < Main.INOMBRE_JOUEURS; i++) {
@@ -77,13 +89,6 @@ public class DisplayJeu extends JPanel {
             imgZoneJoueur = ImageIO.read(new File("res/zoneJoueur.png"));
 
 
-            imgHighlightCartes = ImageIO.read(new File("res/highlightCartes.png"));
-            imgHighlightDeffause = ImageIO.read(new File("res/highlightDeffause.png"));
-            imgHighlightPaquet = ImageIO.read(new File("res/highlightPaquet.png"));
-            imgHighlightPlayer1 = ImageIO.read(new File("res/highlightPlayer1.png"));
-            imgHighlightPlayer2 = ImageIO.read(new File("res/highlightPlayer2.png"));
-            imgHighlightTas = ImageIO.read(new File("res/highlightTas.png"));
-
         } catch (IOException e) {
             IO.println(e.getMessage());
         }
@@ -91,21 +96,23 @@ public class DisplayJeu extends JPanel {
 
         this.addMouseListener(new MouseAdapter() {
             Joueur oJoueurActuel = null;
-            Carte oCarteActive = null;
+
             Defausse oDefausse = oPartie.getoDefausse();
 
             @Override
             public void mousePressed(MouseEvent e) {
-
+                IO.println(bPigerEnCours);
                 List<Carte> oMainJoueurActuel;
                 List<Joueur.Zone> aPositionCartesJoueurActuel;
-                if (bPigerEnCours) {
+                if (!bPigerEnCours) {
 
-                    if (rZoneDefausse.contient(e.getPoint())) {
+                    if (rZoneDefausse.contient(e.getPoint()) && !(rZoneDefausse.contient(pointDernierClic))) {
+                        pointDernierClic = e.getPoint();
                         oDefausse.ajouterCarte(oCarteActive);
-                        bPigerEnCours = false;
+                        bPigerEnCours = true;
                         bRevelerCartePaquet = false;
                         repaint();
+                        return;
                     }
 
                     oMainJoueurActuel = oJoueurActuel.getaMainJoueur();
@@ -116,6 +123,7 @@ public class DisplayJeu extends JPanel {
                         Joueur.Zone posCarteActuelle = aPositionCartesJoueurActuel.get(j);
 
                         if (posCarteActuelle.contient(e.getPoint())) {
+                            pointDernierClic = e.getPoint();
                             // Mettre la carte actuelle dans la defausse
                             oDefausse.ajouterCarte(carteActuelle);
                             // Remplacer par la carte active
@@ -123,36 +131,42 @@ public class DisplayJeu extends JPanel {
                             oMainJoueurActuel.add(j, oCarteActive);
 
 
-                            bPigerEnCours = false;
+                            bPigerEnCours = true;
                             bRevelerCartePaquet = false;
-//                          IO.println(posCarteActuelle + " ICI B");
-                            IO.println(carteActuelle);
-                            IO.println(oMainJoueurActuel);
+
+
                             repaint();
+                            return;
                         }
                     }//FIN for
-                }
 
+                }
                 // Si on clique sur le paquet ou la deffause pour piger
-                if ((rZonePaquet.contient(e.getPoint()) || rZoneDefausse.contient(e.getPoint())) && !bPigerEnCours) {
+                else if ((rZonePaquet.contient(e.getPoint()) || rZoneDefausse.contient(e.getPoint())) && bPigerEnCours) {
 
                     // Code specifique a si on clique sur le paquet
-                    if (rZonePaquet.contient(e.getPoint())) {
+                    if (rZonePaquet.contient(e.getPoint()) && bPigerEnCours) {
+                        pointDernierClic = e.getPoint();
+                        bPigerEnCours = false;
                         bRevelerCartePaquet = true;
                         oCarteActive = oPartie.getoPaquet().piger();
-                        IO.println(bPigerEnCours);
+
                     }
 
                     // Code specifique a si on clique sur la defausse
-                    if (rZoneDefausse.contient(e.getPoint()) && !oDefausse.aCartes.isEmpty()) {
+                    if (rZoneDefausse.contient(e.getPoint()) && !oDefausse.aCartes.isEmpty() && bPigerEnCours) {
+                        pointDernierClic = e.getPoint();
+                        bPigerEnCours = false;
                         oCarteActive = oPartie.getoDefausse().regarderTop();
+                        oDefausse.aCartes.remove(oCarteActive);
                         IO.println(oCarteActive);
+
                     }
 
                     // Code pour les deux
-                    bPigerEnCours = true;
-
-                    if (bTourJ1) {
+//                    bPigerEnCours = false;
+                    iNbrTour++;
+                    if (iNbrTour % 2 == 0) {
                         bTourJ1 = false;
                         oJoueurActuel = oPartie.getaJoueurs().get(0);
 //                            IO.println(oJoueurActuel + " if");
@@ -182,37 +196,88 @@ public class DisplayJeu extends JPanel {
 
         /* rectangles a fill pour les highlights de differentes zones :
 
-        zone paquet ---->g.fillRect(
-                            800,
-                            466,
-                            118,
-                            147
-                        );
+        // highlight sur le paquet
+        g.fillRect(
+                    800,
+                    466,
+                    118,
+                    147
+                );
 
+        ----
 
+        // highlight sur la defausse
+        g.fillRect(
+                    1001,
+                    466,
+                    118,
+                    147
+            );
+
+        ----
          */
 
-        Color highlightColor = Color.decode("#61e6ec");
-        super.paintComponent(g);
-        g.setColor(highlightColor);
 
-        if (!bPigerEnCours) {
-            g.drawImage(imgBackground,
+        super.paintComponent(g);
+
+
+
+        Color highlightColor = Color.decode("#61e6ec");
+        g.setColor(Color.BLACK);
+
+        g.setFont(fMonospaced);
+        FontMetrics metrics = Toolkit.getDefaultToolkit().getFontMetrics(fMonospaced);
+
+        if (iNbrTour == 0) {
+            IO.println("sa se rend ici");
+            // highlight sur le paquet
+            g.fillRect(
+                    800,
+                    466,
+                    118,
+                    147
+            );
+            g.drawImage(
+                    imgBackground,
                     0,
                     0,
                     Main.ISCREEN_WIDTH,
                     Main.ISCREEN_HEIGHT,
                     null
             );
-        }
-        else{
+        } else if (!bPigerEnCours) {
+            Joueur.Zone rZoneJoueurActuel = null;
+            for(int i = 0; i < Main.INOMBRE_JOUEURS; i++){
+                rZoneJoueurActuel = aZonesJoueurs.get(i);
+            }
+            g.drawImage(
+                    imgBackground,
+                    0,
+                    0,
+                    Main.ISCREEN_WIDTH,
+                    Main.ISCREEN_HEIGHT,
+                    null
+            );
+        } else {
+            // highlight sur le paquet
+            g.fillRect(
+                    800,
+                    466,
+                    118,
+                    147
+            );
+
+            // highlight sur la defausse
             g.fillRect(
                     1001,
                     466,
                     118,
                     147
             );
-            g.drawImage(imgBackground,
+
+            // image de fond
+            g.drawImage(
+                    imgBackground,
                     0,
                     0,
                     Main.ISCREEN_WIDTH,
@@ -248,34 +313,16 @@ public class DisplayJeu extends JPanel {
                 null
         );
 
-        g.drawString(
-                !oPartie.getoDefausse().getaCartes().isEmpty()
-                        ? oPartie.getoDefausse().regarderTop().getiValeurString()
-                        : "",
-                rZoneDefausse.posx() + (rZoneDefausse.width() / 2),
-                rZoneDefausse.posy() + (rZoneDefausse.height() / 2)
-        );
 
-        g.drawString(oPartie.getoDefausse().regarderTop().getsSigne(),
-                rZoneDefausse.posx() + (rZoneDefausse.width() / 2),
-                rZoneDefausse.posy() + (rZoneDefausse.height() / 2) + 10
-        );
+        if (!oPartie.getoDefausse().getaCartes().isEmpty()) {
+            Carte oTopCarte = oPartie.getoDefausse().regarderTop();
+            dessinerTextCarte(g,metrics,highlightColor,oTopCarte);
+        }
 
         for (int i = 0; i < aZonesJoueurs.size(); i++) {
             Joueur.Zone rZoneJoueur = aZonesJoueurs.get(i);
             Joueur oJoueurActuel = oPartie.getaJoueurs().get(i);
             List<Joueur.Zone> aPositionCartesJoueurActuel = oJoueurActuel.getaPositionCartes();
-            g.setColor(Color.RED);
-            g.drawImage(
-                    imgZoneJoueur,
-                    rZoneJoueur.posx(),
-                    rZoneJoueur.posy(),
-                    rZoneJoueur.width(),
-                    rZoneJoueur.height(), null
-
-            );
-//            g.setColor(Color.black);
-//            Point[] points = rZoneJoueur.getPointsCartes();
             List<Carte> oMainJoueurActuel = oJoueurActuel.getaMainJoueur();
 
             for (int j = 0; j < oMainJoueurActuel.size(); j++) {
@@ -283,6 +330,17 @@ public class DisplayJeu extends JPanel {
 
                 Carte carteActuelle = oMainJoueurActuel.get(j);
                 if (!carteActuelle.bEstNull) {
+
+                    if (!bPigerEnCours) {
+                        if (iNbrTour % 2 == i) {
+                            g.fillRect(
+                                    rZoneJoueur.posx() + aPosHighlightCartes.get(j)[0],
+                                    rZoneJoueur.posy() + aPosHighlightCartes.get(j)[1] ,
+                                    90,
+                                    120
+                            );
+                        }
+                    }
                     g.drawImage(
                             imgCarteFaceDown,
                             p.posx(),
@@ -292,12 +350,13 @@ public class DisplayJeu extends JPanel {
                             null
                     );
 
+                    g.setColor(Color.RED);
                     g.drawString(
                             carteActuelle.getiValeurString() + " " + carteActuelle.getsSigne(),
                             p.posx() + (p.width() / 2),
                             p.posy() + (p.height() / 2)
                     );
-
+                    g.setColor(highlightColor);
                 } else {
                     g.drawImage(
                             imgCarteNull,
@@ -311,13 +370,69 @@ public class DisplayJeu extends JPanel {
 
             }
 
-            g.drawString("Zone Jeu", rZoneJoueur.posx(), rZoneJoueur.posy() - 10);
+
+            g.drawImage(
+                    imgZoneJoueur,
+                    rZoneJoueur.posx(),
+                    rZoneJoueur.posy(),
+                    rZoneJoueur.width(),
+                    rZoneJoueur.height(), null
+
+            );
+
+
+//            g.setColor(Color.black);
+//            Point[] points = rZoneJoueur.getPointsCartes();
+//            g.drawString("Zone Jeu", rZoneJoueur.posx(), rZoneJoueur.posy() - 10);
         }
 
 
     }
 
+    public void dessinerTextCarte(Graphics g, FontMetrics metrics, Color highlightColor, Carte oCarte){
+        int iValeur = oCarte.getiValeur();
+        String sValeur = oCarte.getiValeurString();
+        String sSigne = oCarte.getsSigne();
 
+        if (Objects.equals(sSigne, "♠️") || Objects.equals(sSigne, "♣️")) {
+            g.setColor(Color.BLACK);
+        } else {
+            g.setColor(Color.RED);
+        }
+
+        if(iValeur == 11){
+            sValeur = "J";
+        } else if (iValeur == 12) {
+            sValeur = "Q";
+        } else if (iValeur == 13) {
+            sValeur = "K";
+        }
+        int valLargeur = metrics.stringWidth(sValeur);
+        int sigLargeur = metrics.stringWidth(sSigne);
+        int hauteurTotale = metrics.getHeight();
+
+        int cX = rZoneDefausse.posx() + (rZoneDefausse.width() / 2);
+        int cY = rZoneDefausse.posy() + (rZoneDefausse.height() / 2);
+
+        g.drawString(
+                sValeur,
+                cX - (valLargeur / 2),
+                cY + (hauteurTotale / 4)
+        );
+
+        g.drawString(
+                sSigne,
+                cX - (sigLargeur / 2),
+                cY - (hauteurTotale / 2)
+        );
+
+        g.drawString(sSigne,
+                cX - (sigLargeur / 2),
+                cY + (hauteurTotale)
+        );
+
+        g.setColor(highlightColor);
+    }
 //Getters/Setters
 
     public Partie getoPartie() {
