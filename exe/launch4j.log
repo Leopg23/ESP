@@ -1,0 +1,34 @@
+
+
+Version:	3.50
+CmdLine:	C:\Users\leopg\Documents\Epreuve_Sythese_Programme\ESP\exe\Ouistiti.exe --l4j-debug
+JNI:		No
+WOW64:		Yes
+Working dir:	C:\Users\leopg\Documents\Epreuve_Sythese_Programme\ESP\exe\.
+Requires JDK:	No
+Requires 64-Bit: No
+Java min ver:	1.008.000
+Java max ver:	
+Substitute:	JAVA_HOME = 
+Substitute:	PATH = C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\Oculus\Support\oculus-runtime;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Users\leopg\AppData\Local\Microsoft\WindowsApps;C:\Users\leopg\AppData\Local\GitHubDesktop\bin;C:\Users\leopg\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\leopg\AppData\Roaming\npm;C:\Program Files\JetBrains\IntelliJ IDEA 2025.3.2\bin;C:\Program Files\Java\jdk-25.0.2\bin
+JRE paths:	;C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files\Oculus\Support\oculus-runtime;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\Users\leopg\AppData\Local\Microsoft\WindowsApps;C:\Users\leopg\AppData\Local\GitHubDesktop\bin;C:\Users\leopg\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\leopg\AppData\Roaming\npm;C:\Program Files\JetBrains\IntelliJ IDEA 2025.3.2\bin;C:\Program Files\Java\jdk-25.0.2\bin
+Check launcher:	C:\Program Files\Common Files\Oracle\Java\javapath\bin\javaw.exe (not found)
+Check launcher:	C:\Program Files\Oculus\Support\oculus-runtime\bin\javaw.exe (not found)
+Check launcher:	C:\WINDOWS\system32\bin\javaw.exe (not found)
+Check launcher:	C:\WINDOWS\bin\javaw.exe (not found)
+Check launcher:	C:\WINDOWS\System32\Wbem\bin\javaw.exe (not found)
+Check launcher:	C:\WINDOWS\System32\WindowsPowerShell\v1.0\bin\javaw.exe (not found)
+Check launcher:	C:\WINDOWS\System32\OpenSSH\bin\javaw.exe (not found)
+Check launcher:	C:\Program Files\Git\cmd\bin\javaw.exe (not found)
+Check launcher:	C:\Program Files\nodejs\bin\javaw.exe (not found)
+Check launcher:	C:\Users\leopg\AppData\Local\Microsoft\WindowsApps\bin\javaw.exe (not found)
+Check launcher:	C:\Users\leopg\AppData\Local\GitHubDesktop\bin\javaw.exe (not found)
+Check launcher:	C:\Users\leopg\AppData\Local\Programs\Microsoft VS Code\bin\javaw.exe (not found)
+Check launcher:	C:\Users\leopg\AppData\Roaming\npm\bin\javaw.exe (not found)
+Check launcher:	C:\Program Files\JetBrains\IntelliJ IDEA 2025.3.2\bin\javaw.exe (not found)
+Check launcher:	C:\Program Files\Java\jdk-25.0.2\bin\javaw.exe (OK)
+Version string: 1.025.000_002 / 64-Bit (OK)
+Launcher:	C:\Program Files\Java\jdk-25.0.2\bin\javaw.exe
+Launcher args:	-jar "C:\Users\leopg\Documents\Epreuve_Sythese_Programme\ESP\exe\Ouistiti.exe"
+Args length:	78/32768 chars
+Exit code:	0

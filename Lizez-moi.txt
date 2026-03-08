@@ -1,0 +1,38 @@
+Fichiers les plus importants en ordre croissant:
+
+Volet Prog:(ESP/src/Ouistiti/[nom de la classe])
+
+
+
+DisplayJeu.java (660 lignes)
+Joueur.java (130 lignes)
+Main.java (99 lignes)
+Partie.java(85 lignes)
+Carte.java (63 lignes)
+Tas.java (53 lignes)
+Paquet.java (39 lignes)
+Defausse.java (23 lignes)
+
+(les exercices que j'ai fait pour apprendre Java se trouvent dans ESP/src/exercices mais ils sont moins importants et peu organisés. L'exécution du fichier Main (ESP/src/exercices/execution/Main.java) permet de calculer l'air d'un rectangle et d'un cercle et de dire lequel est le plus grand entre les deux.)
+
+Volet Création:
+
+(ESP/res/[nom du fichier psd])
+
+fond_du_jeu.psd
+zoneJoueur.psd
+cartes.psd (le recto et le verso sont dans ce fichier)
+icone.psd
+logo.psd
+
+Information nécessaire au démarrage de l'application :
+
+Le fichier exe se trouve ici : \ESP\exe\Ouistiti.exe , il suffit de double cliquer sur l'icône dans l'explorateur de fichier.
+
+Fonctionnement du jeu:
+
+Le but du jeu est d'être certain que la somme des cartes de ta main est inférieure à celle de la main du joueur opposé. Le jeu commence avec deux joueurs qui ont chacun une main de quatre cartes face cachée pigées au hasard, un paquet (à gauche) et une défausse (à droite). Chacun son tour, les deux joueurs (Nommé Pierre et Léo) pigent une carte, soit de la défausse ou du paquet. Ils cliquent ensuite n'importe laquelle de leurs quatre cartes pour l'échanger avec la carte pigée, dans le cas où ils ont pigé du paquet, ils peuvent aussi décider de ne pas la piger en la cliquant sur la défausse. De plus, à tout moment, si un des joueurs croit qu'une de ses cartes a la même valeur que la carte sur le dessus de la défausse, il peut tenter sa chance en mettant la carte de sa main sur le dessus de la défausse (avec le clic droit de la souris). Si les deux cartes avaient là bel et bien la même valeur, le joueur est avantagé, car il a maintenant une carte en moins. Dans le cas contraire, le joueur remplace la carte qu'il a mise sur la défausse par une carte du paquet au hasard (sans qu'il ait la chance de voir la valeur de la nouvelle carte), et il devra attendre jusqu'au prochain tour avant de pouvoir retenter sa chance. Une fois qu'un des joueurs est certain que sa main a une somme inférieure, il peut cliquer sur le petit bouton au centre de la fenêtre. À partir de ce moment, un dernier tour sera accordé aux deux joueurs, et à la fin de ce tour, le joueur qui avait la somme la plus petite gagnera la partie.
+
+PS. Il est normal que la plupart des cartes soient face cachée en tout temps, puisque c'est un jeu de mémoire. Les deux seules occasions où l'on peut voir la valeur des cartes est au moment où on les pige et sur la défausse.
+
+
