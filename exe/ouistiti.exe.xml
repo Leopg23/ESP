@@ -3,7 +3,7 @@
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
   <jar>C:\Users\leopg\Documents\Epreuve_Sythese_Programme\ESP\out\artifacts\ESP_jar\ESP.jar</jar>
-  <outfile>C:\Users\leopg\Documents\Epreuve_Sythese_Programme\ESP\exe\Ouistiti.exe</outfile>
+  <outfile>C:\Users\leopg\Documents\Epreuve_Sythese_Programme\ESP\exe\Ouistiti_oldold.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>

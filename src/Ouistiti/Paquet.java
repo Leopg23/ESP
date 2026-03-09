@@ -2,7 +2,6 @@ package Ouistiti;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class Paquet extends Tas{
 

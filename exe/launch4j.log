@@ -1,7 +1,7 @@
 
 
 Version:	3.50
-CmdLine:	C:\Users\leopg\Documents\Epreuve_Sythese_Programme\ESP\exe\Ouistiti.exe --l4j-debug
+CmdLine:	C:\Users\leopg\Documents\Epreuve_Sythese_Programme\ESP\exe\Ouistiti_oldold.exe --l4j-debug
 JNI:		No
 WOW64:		Yes
 Working dir:	C:\Users\leopg\Documents\Epreuve_Sythese_Programme\ESP\exe\.
@@ -29,6 +29,6 @@ Check launcher:	C:\Program Files\JetBrains\IntelliJ IDEA 2025.3.2\bin\javaw.exe 
 Check launcher:	C:\Program Files\Java\jdk-25.0.2\bin\javaw.exe (OK)
 Version string: 1.025.000_002 / 64-Bit (OK)
 Launcher:	C:\Program Files\Java\jdk-25.0.2\bin\javaw.exe
-Launcher args:	-jar "C:\Users\leopg\Documents\Epreuve_Sythese_Programme\ESP\exe\Ouistiti.exe"
+Launcher args:	-jar "C:\Users\leopg\Documents\Epreuve_Sythese_Programme\ESP\exe\Ouistiti_oldold.exe"
 Args length:	78/32768 chars
 Exit code:	0

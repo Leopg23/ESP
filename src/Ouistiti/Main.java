@@ -71,7 +71,7 @@ public class Main {
         DisplayJeu jeu = new DisplayJeu(oPartie);
         ImageIcon imageIcon = new ImageIcon("res/icon.png");
 
-        JFrame frame = new JFrame("Ouistiti");
+        JFrame frame = new JFrame("Ouistiti_oldold");
         frame.setUndecorated(true);
         frame.add(jeu);
         frame.pack();

@@ -1,3 +1,3 @@
 Manifest-Version: 1.0
-Main-Class: Ouistiti.Main
+Main-Class: Ouistiti_oldold.Main
 

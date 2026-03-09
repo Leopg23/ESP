@@ -1,6 +1,6 @@
 Fichiers les plus importants en ordre croissant:
 
-Volet Prog:(ESP/src/Ouistiti/[nom de la classe])
+Volet Prog:(ESP/src/Ouistiti_oldold/[nom de la classe])
 
 
 
@@ -27,7 +27,7 @@ logo.psd
 
 Information nécessaire au démarrage de l'application :
 
-Le fichier exe se trouve ici : \ESP\exe\Ouistiti.exe , il suffit de double cliquer sur l'icône dans l'explorateur de fichier.
+Le fichier exe se trouve ici : \ESP\exe\Ouistiti_oldold.exe , il suffit de double cliquer sur l'icône dans l'explorateur de fichier.
 
 Fonctionnement du jeu:
 
