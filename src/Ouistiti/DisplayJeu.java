@@ -227,17 +227,17 @@ public class DisplayJeu extends JPanel {
                                 Carte oTopDefausse = oDefausse.regarderTop();
 
 
-                                oDefausse.ajouterCarte(carteActuelle);
-//                            oDefausse.aCartes.getLast().setbEstNull(false);
+                            oDefausse.ajouterCarte(carteActuelle);
+
                                 if (oTopDefausse.getiValeur() == carteActuelle.getiValeur()) {
-                                    carteActuelle.setbEstNull(true);
+                                    Carte carteNull = new Carte(999,"",false,true);
+                                    oMainJoueurActuel.set(j,carteNull);
                                 } else {
                                     oJoueurActuelRMB.setDernierEssai(iNbrTour);
-                                    IO.println(dernierEssai);
-                                    oMainJoueurActuel.remove(j);
-                                    oMainJoueurActuel.add(j, oPaquet.piger());
+//                                    IO.println(dernierEssai);
+                                    oMainJoueurActuel.set(j,oPaquet.piger());
                                 }
-
+//                                oDefausse.regarderTop().setbEstNull(false);
 
                                 repaint();
                                 return;
